@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Auth - Register page</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="{{ style_css }}">
+
+</head>
+
+<body class="h-screen">
+  <div style="--duration:20s;" class="container-style grid place-items-center h-screen w-screen mx-auto my-auto"
+    id="auth-register-page">
+    <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+      <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+      <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+    </div>
+    <div style="--duration:50s;"
+      class="container-style-inverted w-[90vw] h-[90vh] bg-slate-950/80 m-auto rounded-xl shadow-lg shadow-black/20 relative overflow-hidden grid grid-cols-[1fr_3fr]">
+      <div class="h-screen w-full"
+        style="background-image: url('{{ shinobu }}'); background-size: cover; background-position: center; background-repeat: no-repeat">
+      </div>
+      <div class="container mx-auto flex flex-col justify-center p-6">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Crear nuevo usuario</h1>
+
+        <form class="grid grid-cols-3 gap-6">
+          <!-- Información básica -->
+          <div class="col-span-2 space-y-4">
+            <h2>
+              User Information
+            </h2>
+            <div class="p-3 rounded-md border-image">
+              <div>
+                <label for="first_name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                <input id="first_name" type="text" placeholder="Nombre"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+
+              <div>
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Apellido</label>
+                <input id="last_name" type="text" placeholder="Apellido"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                <input id="email" type="email" placeholder="ejemplo@correo.com"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+
+              <div>
+                <label for="username" class="block text-sm font-medium text-gray-700">Usuario</label>
+                <input id="username" type="text" placeholder="Nombre de usuario"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+            </div>
+
+            <!-- Contraseña y permisos -->
+            <h2>
+              Password and Permissions
+            </h2>
+            <div class="border-image p-3 rounded-md space-y-4">
+
+              <div>
+                <label for="password1" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                <input id="password1" type="password" placeholder="********"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+
+              <div>
+                <label for="password2" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+                <input id="password2" type="password" placeholder="********"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              </div>
+              <div class="flex items-center">
+                <input id="is_superuser" type="checkbox"
+                  class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                <label for="is_superuser" class="ml-2 block text-sm text-gray-700">Es superusuario</label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Permisos -->
+          <div class="col-span-1 space-y-4">
+            <h2>
+              Set Permissions
+            </h2>
+            <div class="border-image rounded-md p-1">
+              <label for="groups" class="block text-sm font-medium text-gray-700">Grupos</label>
+              <select id="groups" multiple
+                class="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 overflow-y-auto h-32">
+                <option>Administradores</option>
+                <option>Usuarios</option>
+                <option>Invitados</option>
+              </select>
+            </div>
+            <div class="border-image rounded-md p-1">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Permisos</label>
+              <div class="p-3 rounded-md flex flex-col">
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                  <span class="text-sm text-gray-700">Puede agregar usuarios</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                  <span class="text-sm text-gray-700">Puede editar usuarios</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                  <span class="text-sm text-gray-700">Puede eliminar usuarios</span>
+                </label>
+                <label class="flex items-center space-x-2">
+                  <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                  <span class="text-sm text-gray-700">Puede ver usuarios</span>
+                </label>
+              </div>
+            </div>
+
+              <h2>
+              Set Role
+            </h2>
+            <div class="border-image rounded-md p-1">
+              <label for="role_group" class="text-sm font-medium text-gray-700">Roles</label>
+              <select id="role_group"
+                class="p-2 mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 overflow-y-auto">
+                <option>Reader</option>
+                <option>Author</option>
+                <option>Librarian</option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- Botones -->
+          <div class="col-span-1 md:col-span-2 flex justify-end space-x-3 mt-6">
+            <button type="submit"
+              class="btn px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
