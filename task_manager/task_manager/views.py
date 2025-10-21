@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.templatetags.static import static
-
+from administration.forms.create_user_form import CreateUserForm
 def index(request):
     links = [
         {
@@ -41,4 +41,16 @@ def auth_register(request):
         "style_css": static("css/globals.css"),
         "shinobu": static("img/Shinobu.jpg"),
     }
+
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            context['success_message'] = "User registered successfully."
+        else:
+            context['error_message'] = "There were errors in the form."
+            context['form_errors'] = form.errors
+    else:
+        form = CreateUserForm()
+    context['form'] = form
     return render(request, 'auth/register.html', context)
