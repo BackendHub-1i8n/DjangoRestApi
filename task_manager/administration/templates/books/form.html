@@ -1,0 +1,70 @@
+{% extends 'layout/admin_base.html' %}
+{% load static %}
+
+{% block title %}
+Book Management - {% if is_edit %}Edit{% else %}Add{% endif %} Book
+{% endblock %}
+
+{% block component %}
+<section class="">
+    <div style="--duration:20s;" class="container-style grid place-items-center mx-auto my-auto"
+    >
+        <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+      <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+      <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+    </div>
+    <div style="--duration:50s;"
+      class="w-full bg-slate-950/80 m-auto rounded-xl shadow-lg shadow-black/20 relative grid grid-cols-1 lg:grid-cols-[2fr_2fr]">
+
+      <div class="hidden lg:block rounded-l-xl"
+        style="background-image: url('{{ shinobu }}'); background-size: cover; background-position: center; background-repeat: no-repeat">
+      </div>
+      <div class="p-6 lg:p-10">
+        <h1 class="text-2xl font-bold text-white mb-2 hero-title border-b border-gray-700 pb-4">
+            {% if is_edit %}Edit Book: <span class="text-primary">{{ book.title }}</span>{% else %}Register New Book{% endif %}
+        </h1>
+
+        {% if messages %}
+            <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-4 rounded-lg text-sm {% if 'success' in message.tags %}bg-green-900/50 text-green-300 border border-green-700{% elif 'error' in message.tags %}bg-red-900/50 text-red-300 border border-red-700{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+          <div class="p-4 mb-4 text-sm text-red-300 bg-red-900/50 rounded-lg border border-red-700" role="alert">
+            <span class="font-bold block mb-1">General Errors:</span>
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6" method="POST" action="">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div class="{% if field.name == 'author' %}md:col-span-2{% else %}col-span-1{% endif %}">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-primary mb-1">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<p class="mt-1 text-sm text-red-500">{{ field.errors.0 }}</p>{% endif %}
+                {% if field.name == 'author' %}<p class="mt-1 text-xs text-gray-400">Hold **CTRL** or **CMD** to select multiple authors.</p>{% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="md:col-span-2 flex justify-end space-x-3 mt-6">
+            <button type="submit"
+              class="btn px-6 py-3 text-white rounded-full transition duration-300 bg-indigo-600 hover:bg-indigo-700">
+              <i class="fas fa-save mr-2"></i> {% if is_edit %}Save Changes{% else %}Register Book{% endif %}
+            </button>
+            <a href="{% url 'administration:books_list' %}"
+               class="btn px-6 py-3 bg-gray-500 text-white rounded-full transition duration-300 hover:bg-gray-600">
+               <i class="fas fa-times mr-2"></i> Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

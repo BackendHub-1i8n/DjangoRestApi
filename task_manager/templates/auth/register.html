@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout/base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <title>Auth - Register page</title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="{{ style_css }}">
+{% block title %}
+Auth - Register User
+{% endblock %}
 
-</head>
-
-<body class="h-screen">
+{% block component %}
+<section class="container h-[90vh]">
   <div style="--duration:20s;" class="container-style grid place-items-center h-screen w-screen mx-auto my-auto"
     id="auth-register-page">
     <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
@@ -73,10 +69,17 @@
                 <input id="password2" type="password" placeholder="********"
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
               </div>
-              <div class="flex items-center">
-                <input id="is_superuser" type="checkbox"
-                  class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
-                <label for="is_superuser" class="ml-2 block text-sm text-gray-700">Es superusuario</label>
+              <div class="flex space-x-6 flex-wrap gap-x-6">
+                  <div class="flex items-center">
+                    <input id="is_superuser" type="checkbox"
+                      class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                    <label for="is_superuser" class="ml-2 block text-sm text-gray-700">Is Admin</label>
+                  </div>
+                  <div class="flex items-center">
+                    <input id="is_active" type="checkbox"
+                      class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" />
+                    <label for="is_active" class="ml-2 block text-sm text-gray-700">Is Active</label>
+                  </div>
               </div>
 
             </div>
@@ -142,6 +145,5 @@
       </div>
     </div>
   </div>
-</body>
-
-</html>
+</section>
+{% endblock %}

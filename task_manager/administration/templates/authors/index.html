@@ -1,0 +1,73 @@
+{% extends 'layout/admin_base.html' %}
+
+{% block title %}
+Author Management - Author List
+{% endblock %}
+
+{% block component %}
+<section class="">
+
+    <div
+        class="container-neon p-6 mb-8 rounded-xl border-2 flex flex-col sm:flex-row justify-between items-center shadow-lg">
+        <h2 class="hero-title text-2xl font-bold text-light">
+            Author List
+        </h2>
+        <a href="{% url 'administration:add_author' %}"
+            class="btn relative flex items-center justify-center space-x-2 text-dark bg-gradient-to-r from-primary to-secondary py-2 px-6 shadow-md shadow-primary/30 transition duration-300 hover:shadow-primary/50">
+            <i class="fa-solid fa-user-plus"></i>
+            <span class="relative text-sm font-semibold">
+                Create New Author
+            </span>
+        </a>
+    </div>
+    <p class="text-light/70 font-mono text-lg ml-4">
+        Total: {{ authors|length }}
+    </p>
+    <div class="overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50">
+        <table class="w-full text-sm text-left text-gray-400">
+            <thead>
+                <tr>
+                    <th scope="col" class="px-6 py-3">Author Name</th>
+                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">Nationality</th>
+                    <th scope="col" class="px-6 py-3">Biography Snippet</th>
+                    <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                <tr class="transition duration-150 ease-in-out hover:bg-gray-700/50">
+                    <td class="px-6 py-4 font-medium text-white whitespace-nowrap">
+                        {{ author.first_name }} {{ author.last_name }}
+                    </td>
+                    <td class="px-6 py-4 hidden sm:table-cell">{{ author.nacionality }}</td>
+                    <td class="px-6 py-4">
+                        {{ author.biography|truncatechars:50 }}
+                    </td>
+                    <td class="px-6 py-4 flex items-center justify-center space-x-2">
+
+                        <a title="Edit Author" href="{% url 'administration:edit_author' author.id %}"
+                            class="text-yellow-400 hover:text-yellow-300 p-2 rounded-full transition duration-150 hover:bg-yellow-400/10">
+                            <i class="fa-solid fa-pencil w-4 h-4"></i>
+                        </a>
+
+                        <a href="{% url 'administration:author_details' author.id %}" title="View Details"
+                            class="text-blue-400 hover:text-blue-300 p-2 rounded-full transition duration-150 hover:bg-blue-400/10">
+                            <i class="fa-solid fa-circle-info w-4 h-4"></i>
+                        </a>
+
+                        <a href="{% url 'administration:delete_author' author.id %}" title="Delete Author"
+                            class="text-red-400 hover:text-red-300 p-2 rounded-full transition duration-150 hover:bg-red-400/10">
+                            <i class="fa-solid fa-trash-can w-4 h-4"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr class="text-center">
+                    <td colspan="4" class="p-6 text-gray-500">No hay Autores registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

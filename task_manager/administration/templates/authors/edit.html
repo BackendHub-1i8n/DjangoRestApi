@@ -1,0 +1,94 @@
+{% extends 'layout/admin_base.html' %}
+{% load static %}
+
+{% block title %}
+Author Management - Edit Author
+{% endblock %}
+
+{% block component %}
+<section class="">
+  <div style="--duration:20s;" class="container-style grid place-items-center mx-auto my-auto"
+    id="auth-register-page">
+    <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+      <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+      <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+    </div>
+    
+    <div style="--duration:50s;"
+      class="w-full bg-slate-950/80 m-auto rounded-xl shadow-lg shadow-black/20 relative grid grid-cols-1 lg:grid-cols-[2fr_2fr]">
+      
+      <div class="hidden lg:block w-full h-full rounded-l-xl"
+        style="background-image: url('{{ shinobu }}'); background-size: cover; background-position: center; background-repeat: no-repeat">
+      </div>
+      
+      <div class="container mx-auto flex flex-col justify-center p-6 lg:p-10">
+        <h1 class="text-2xl font-bold text-gray-100 mb-2 hero-title text-center">
+            Edit Author Profile
+        </h1>
+        
+        <p class="text-center text-sm mb-6 text-gray-400">
+            Editing profile for: <span class="text-primary font-bold">{{ person.first_name }} {{ person.last_name }}</span> (CI: {{ person.ci }})
+        </p>
+
+        {% if messages %}
+            <div class="mb-4">
+            {% for message in messages %}
+                <div class="p-4 rounded-lg text-sm {% if 'success' in message.tags %}bg-green-100 text-green-700{% elif 'error' in message.tags %}bg-red-100 text-red-700{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+          <div class="p-4 mb-4 text-sm text-red-700 bg-red-800 rounded-lg dark:bg-red-900/50 dark:text-red-300 border border-red-500" role="alert">
+            <span class="font-bold block mb-1">General Errors:</span>
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <form class="grid grid-cols-1 gap-6" method="POST" action="{% url 'administration:edit_author' author.id %}">
+          {% csrf_token %}
+          
+          <div class="space-y-6">
+            
+            <h2 class="text-xl font-semibold text-white border-b border-gray-700 pb-2 mb-4">Author Profile Details</h2>
+            
+            {% for field in form %}
+              <div class="field-container">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-primary mb-1">
+                    {{ field.label }}
+                    {% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+                </label>
+                
+                {{ field }}
+                
+                {% for error in field.errors %}
+                  <p class="mt-1 text-sm text-red-500">{{ error }}</p>
+                {% endfor %}
+                
+                {% if field.help_text %}
+                  <p class="mt-1 text-xs text-gray-400">{{ field.help_text }}</p>
+                {% endif %}
+                
+              </div>
+            {% endfor %}
+            
+          </div>
+
+          <div class="col-span-1 flex justify-end space-x-3 mt-6">
+            <button type="submit"
+              class="btn px-4 py-2 text-white rounded-md transition duration-300 bg-indigo-600 hover:bg-indigo-700">
+              <i class="fas fa-save mr-2"></i> Save Changes
+            </button>
+            <a href="{% url 'administration:author_details' author.id %}"
+               class="btn px-4 py-2 bg-gray-500 text-dark rounded-md transition duration-300 text-white">
+               <i class="fas fa-times mr-2"></i> Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

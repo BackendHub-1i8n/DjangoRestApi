@@ -1,0 +1,62 @@
+{% load static %}
+<aside id="sidebar"
+    class="container-neon-bg fixed z-20 w-64 h-screen transition-transform duration-300 transform border-r border-gray-700
+           lg:translate-x-0 lg:static lg:h-auto -translate-x-full shadow-xl shadow-black/50">
+
+    <div class="py-4 px-3 overflow-y-auto bg-transparent h-full">
+
+        <div class="text-white text-2xl font-bold mb-6 pt-4 px-1 pb-4 flex items-center space-x-3
+                    border-b border-primary/30 tracking-wider">
+            <i class="fa-solid fa-book-sparkles text-primary"></i>
+            <span class="text-white">Admin <span class="text-primary">System</span></span>
+        </div>
+
+        <ul class="space-y-2 font-medium">
+            {% for link in admin_nav %}
+                <li>
+                    <p class="flex items-center p-2 text-gray-300 rounded-lg group cursor-pointer
+                       {% if link.children %}justify-between{% endif %}
+
+                       /* Estilo Neón al Hover */
+                       hover:bg-primary/10 hover:text-white transition duration-300"
+
+                       {% if link.children %}data-collapse-toggle="dropdown-{{ forloop.counter }}" aria-controls="dropdown-{{ forloop.counter }}"{% endif %}>
+
+                        {% comment %} Ícono del enlace principal {% endcomment %}
+                        {% if link.icon %}
+                            <i class="{{ link.icon }} w-5 h-5 text-primary transition duration-300 group-hover:text-white group-hover:drop-shadow-sm group-hover:shadow-primary"></i>
+                        {% endif %}
+
+                        <span class="ms-3 flex-1 whitespace-nowrap">{{ link.label }}</span>
+
+                        {% if link.children %}
+                            <svg class="w-3 h-3 transition duration-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        {% endif %}
+                    </p>
+
+                    {% if link.children %}
+                        <ul id="dropdown-{{ forloop.counter }}" class="ml-2 hidden py-2 space-y-2 transition-max-height duration-300 ease-in-out">
+                            {% for child in link.children %}
+                                <li>
+                                    <a href="{% url child.to %}"
+                                       class="flex gap-4 items-center w-full p-2 text-gray-400 transition duration-300 rounded-lg pl-11 group
+                                              /* Estilo Neón al Hover */
+                                              hover:bg-primary/10 hover:text-white hover:font-semibold">
+
+                                        {% if child.icon %}
+                                            <i class="{{ child.icon }} w-5 h-5 text-gray-500 transition duration-300 group-hover:text-primary"></i>
+                                        {% endif %}
+
+                                        {{ child.label }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>

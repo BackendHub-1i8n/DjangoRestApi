@@ -1,0 +1,136 @@
+{% extends 'layout/admin_base.html' %}
+{% load static %}
+
+{% block title %}
+{{ page_title }} - {{ person.first_name }} {{ person.last_name }}
+{% endblock %}
+
+{% block component %}
+<section class="container mx-auto p-4 lg:p-6">
+
+    <div
+        class="container-neon p-6 mb-8 rounded-xl border-2 flex flex-col sm:flex-row justify-between items-center shadow-lg">
+
+        <h2 class="hero-title text-3xl font-bold text-white">
+            Author Details:
+            <span class="text-primary">{{ person.first_name }} {{ person.last_name }}</span>
+        </h2>
+
+        <div class="flex space-x-3 mt-4 sm:mt-0">
+            <a href="{% url 'administration:edit_author' author.id %}"
+               class="btn relative flex items-center justify-center space-x-2 bg-yellow-600/80 text-white py-2 px-4 shadow-md shadow-yellow-500/30 transition duration-300 hover:shadow-yellow-500/50 rounded-full">
+                <i class="fa-solid fa-pencil"></i>
+                <span class="relative text-sm font-semibold">Edit Author</span>
+            </a>
+
+            <a href="{% url 'administration:authors_list' %}"
+               class="btn relative flex items-center justify-center space-x-2 text-dark bg-gray-500/80 text-white py-2 px-4 transition duration-300 hover:bg-gray-600/80 rounded-full">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="relative text-sm font-semibold">Back to List</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+
+        <div class="lg:col-span-1 p-6 rounded-xl border border-primary/20 bg-gray-800/70 shadow-2xl shadow-black/50">
+            <h3 class="text-xl font-bold mb-4 border-b pb-2 text-primary flex items-center space-x-2">
+                <i class="fas fa-user-edit"></i>
+                <span>Author Profile</span>
+            </h3>
+
+            <div class="space-y-4">
+                <div>
+                    <p class="text-sm font-medium text-gray-400">Nationality:</p>
+                    <p class="text-lg font-semibold text-white">{{ author.nacionality }}</p>
+                </div>
+
+                <div>
+                    <p class="text-sm font-medium text-gray-400">Biography:</p>
+                    <div class="p-3 bg-gray-900 rounded-lg border border-gray-700 max-h-60 overflow-y-auto">
+                        <p class="text-gray-300 whitespace-pre-wrap">{{ author.biography }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 p-6 rounded-xl border border-primary/20 bg-gray-800/70 shadow-2xl shadow-black/50">
+            <h3 class="text-xl font-bold mb-4 border-b pb-2 text-primary flex items-center space-x-2">
+                <i class="fas fa-id-card"></i>
+                <span>Personal Information</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 text-sm">
+
+                <div class="detail-item">
+                    <p class="text-gray-400">Full Name:</p>
+                    <p class="text-white font-semibold text-base">{{ person.first_name }} {{ person.last_name }}</p>
+                </div>
+                <div class="detail-item">
+                    <p class="text-gray-400">CI (ID Card):</p>
+                    <p class="text-white font-semibold text-base">{{ person.ci }}</p>
+                </div>
+
+                <div class="detail-item">
+                    <p class="text-gray-400">Email:</p>
+                    <p class="text-primary text-base">{{ person.user.email }}</p>
+                </div>
+                <div class="detail-item">
+                    <p class="text-gray-400">Phone:</p>
+                    <p class="text-white text-base">{{ person.phone }}</p>
+                </div>
+
+                <div class="detail-item">
+                    <p class="text-gray-400">Birth Date:</p>
+                    <p class="text-white text-base">{{ person.birth_date|date:"F d, Y" }}</p>
+                </div>
+                <div class="detail-item">
+                    <p class="text-gray-400">Address:</p>
+                    <p class="text-white text-base">{{ person.address }}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4 text-white border-b border-gray-700 pb-2 flex items-center space-x-2">
+            <i class="fas fa-book text-primary"></i>
+            <span>Books Published ({{ books|length }})</span>
+        </h3>
+
+        <div class="overflow-x-auto shadow-2xl rounded-xl border border-gray-700/50">
+            <table class="w-full text-sm text-left text-gray-400">
+                <thead>
+                    <tr class="bg-gray-700/50 text-white uppercase tracking-wider">
+                        <th scope="col" class="px-6 py-3">Title</th>
+                        <th scope="col" class="px-6 py-3 hidden sm:table-cell">ISBN</th>
+                        <th scope="col" class="px-6 py-3">Published Date</th>
+                        <th scope="col" class="px-6 py-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr class="transition duration-150 ease-in-out hover:bg-gray-700/50 border-t border-gray-700">
+                        <td class="px-6 py-4 font-medium text-white whitespace-nowrap">{{ book.title }}</td>
+                        <td class="px-6 py-4 hidden sm:table-cell">{{ book.isbn }}</td>
+                        <td class="px-6 py-4">{{ book.publication_date|date:"Y-m-d" }}</td>
+                        <td class="px-6 py-4 flex items-center justify-center space-x-2">
+                            <a href="{% url 'administration:book_details' book.id %}"
+                               title="View Book Details"
+                               class="text-blue-400 hover:text-blue-300 p-2 rounded-full transition duration-150 hover:bg-blue-400/10">
+                                <i class="fa-solid fa-circle-info w-4 h-4"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr class="text-center">
+                        <td colspan="4" class="p-6 text-gray-500">This author has not published any books yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

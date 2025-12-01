@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.templatetags.static import static
+from django.contrib.auth import authenticate, login
+
 from administration.forms.create_user_form import CreateUserForm
+import re
+
 def index(request):
     links = [
         {
@@ -54,3 +58,35 @@ def auth_register(request):
         form = CreateUserForm()
     context['form'] = form
     return render(request, 'auth/register.html', context)
+
+
+def auth_login(request):
+    context = {
+        "style_css": static("css/globals.css"),
+        "shinobu": static("img/Shinobu.jpg"),
+    }
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # if username is email, get the username associated with that email
+        # verifi using regex
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if re.match(email_regex, username):
+            from administration.models import User
+            try:
+                user_obj = User.objects.get(email=username)
+                username = user_obj.username
+            except User.DoesNotExist:
+                context['error_message'] = "Invalid email or password. Please try again."
+                return render(request, 'auth/login.html', context)
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('administration:dashboard')
+        else:
+            context['error_message'] = "Invalid username or password. Please try again."
+
+    return render(request, 'auth/login.html', context)

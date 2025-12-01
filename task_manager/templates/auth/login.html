@@ -1,0 +1,78 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}
+Auth - Login Page
+{% endblock %}
+
+{% block component %}
+<section class="container h-[90vh]">
+  <div style="--duration:20s;" class="container-style grid place-items-center h-screen w-screen mx-auto my-auto"
+    id="auth-register-page">
+    <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+      <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-purple-400 dark:from-blue-700"></div>
+      <div class="blur-[106px] h-32 bg-gradient-to-r from-cyan-400 to-sky-300 dark:to-indigo-600"></div>
+    </div>
+
+    <div style="--duration:50s;"
+      class="container-style-inverted w-[90vw] max-w-5xl h-[90vh] max-h-[700px] bg-gray-900/80 m-auto rounded-xl border border-primary/20 shadow-lg shadow-black/50 relative overflow-hidden grid grid-cols-1 md:grid-cols-[1fr_2fr]">
+
+      <div class="hidden md:block w-full h-full"
+        style="background-image: url('{{ shinobu }}'); background-size: cover; background-position: center; background-repeat: no-repeat">
+      </div>
+
+      <div class="container mx-auto flex flex-col justify-center p-8 lg:p-12">
+        <h1 class="text-3xl font-bold text-white mb-2 hero-title">
+            Welcome!
+        </h1>
+        <p class="text-gray-400 mb-8">Login to your <span class="text-primary">Library System</span> account.</p>
+
+        {% if error_message %}
+        <div class="bg-red-900/50 border border-red-700 text-red-300 p-4 rounded-lg mb-6 shadow-md shadow-red-900/30 flex items-center space-x-3" role="alert">
+            <i class="fas fa-exclamation-triangle text-xl"></i>
+            <div>
+                <span class="font-bold block">Authentication Failed</span>
+                <p class="text-sm">{{ error_message }}</p>
+            </div>
+        </div>
+        {% endif %}
+        <form class="flex flex-col gap-6" method="POST" action="{% url 'auth_login' %}">
+            {% csrf_token %}
+            <div>
+                <label for="username" class="block text-sm font-medium text-primary mb-1">
+                    Username or Email
+                </label>
+                <input id="username" name="username" type="text" placeholder="ejemplo@correo.com" required
+                  class="mt-1 block w-full rounded-md shadow-sm focus:border-primary focus:ring-primary
+                         bg-gray-700/50 text-white border border-gray-700 p-3" />
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-primary mb-1">
+                    Password
+                </label>
+                <input id="password" name="password" type="password" placeholder="********" required
+                  class="mt-1 block w-full rounded-md shadow-sm focus:border-primary focus:ring-primary
+                         bg-gray-700/50 text-white border border-gray-700 p-3" />
+            </div>
+
+            <div class="flex justify-end">
+                <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition duration-300">Forgot Password?</a>
+            </div>
+
+            <div class="col-span-1 md:col-span-2 flex justify-center mt-6">
+                <button type="submit"
+                  class="btn relative flex h-12 w-full items-center justify-center px-6 rounded-full
+                         bg-gradient-to-r from-primary to-secondary text-white
+                         shadow-lg shadow-primary/30 transition duration-300 hover:shadow-primary/50">
+                    <span class="relative text-base font-semibold">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Log In
+                    </span>
+                </button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

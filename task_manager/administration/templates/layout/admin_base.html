@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    {% block styles %}{% endblock %}
+    <link rel="stylesheet" href="{% static '/css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static '/css/globals.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* Estilos para el espacio debajo del header fijo */
+        .h-screen-minus-header {
+            height: calc(100vh - 4rem);
+            /* 4rem = 64px, la altura de la cabecera */
+        }
+    </style>
+</head>
+
+<body class="h-screen overflow-hidden">
+    {% include 'layout/admin_header.html' %}
+
+    <div class="flex pt-16 h-screen-minus-header">
+
+        {% include 'layout/admin_sidebar.html' %}
+
+        <main class="flex-1 p-6 overflow-y-auto">
+            {% block component %}
+            {% endblock %}
+        </main>
+    </div>
+
+    {% include 'layout/footer.html' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const toggleButton = document.getElementById('sidebarToggle');
+
+            // 1. Toggle de la Sidebar (para dispositivos pequeños)
+            toggleButton.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            // 2. Funcionalidad de Dropdown/Collapse en la Sidebar
+            const collapseToggles = document.querySelectorAll('[data-collapse-toggle]');
+            collapseToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    // Prevenir navegación si tiene hijos
+                    if (toggle.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+
+                    const targetId = toggle.getAttribute('data-collapse-toggle');
+                    const target = document.getElementById(targetId);
+
+                    target.classList.toggle('hidden');
+
+                    // Rotar la flecha para indicar estado
+                    const arrow = toggle.querySelector('svg');
+                    if (arrow) {
+                        arrow.classList.toggle('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -4,6 +4,12 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+class Role(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class User(AbstractUser):
     roles = [
         ('author', 'Author'),
@@ -17,6 +23,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
     role = models.CharField(max_length=20, choices=roles, default='reader')
+    # role = models.OneToOneField(Role, on_delete=models.CASCADE, null=True, blank=True)
 
     REQUIRED_FIELDS = ['email', 'password']
 
@@ -47,8 +54,6 @@ class Author(models.Model):
     biography = models.TextField()
     person = models.OneToOneField(Person, on_delete=models.CASCADE, related_name='author_profile')
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
 
 
 class Reader(models.Model):
